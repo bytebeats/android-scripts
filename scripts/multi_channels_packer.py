@@ -20,19 +20,19 @@ CHANNEL_LIST_WITH_360 = ['online', 'market_360', 'jinli', 'bdys', 'bdys5', 'chui
                          'bdys2', 'oppo', 'myapp', 'huawei']
 CHANNEL_LIST_1 = ['google_play']
 CHANNEL_LIST_3 = ['xiaomi_global', 'oppo_global', 'vivo_global']
-APP_NAME_FULL = u'Tiger Trade'
-APP_NAME_1 = u'Tiger Trade老虎美港股'
-APP_NAME_3 = u'Tiger Trade-Global Invest&Save'
+APP_NAME_FULL = u'{app_full_name}'
+APP_NAME_1 = u'{app_full_name2}'
+APP_NAME_3 = u'{app_full_name3}'
 
 ORIGINAL_APK_NAME = 'AppLite-online-release-market_360.apk'  # 将要被加固的原始apk文件名
 OUTPUT_APK_NAME = 'AppLite-online-release.apk'  # 未添加渠道的apk文件名
 JIAGU_APK_NAME = 'AppLite-online-release-market_360_aligned.apk'  # 加固后、未添加渠道的apk文件名
 
-JIAGU_USERNAME = 'android-client@tigerbrokers.com'  # 360加固服务的用户名
-JIAGU_PASSWORD = 'TigerBrokers~9'  # 360加固服务的密码
-KEY_PWD = 'tiger9'  # keystore password
-ALIAS = 'tigerbrokers'  # alias
-ALIAS_PWD = 'tiger9'  # alias password
+JIAGU_USERNAME = 'android-client@xxx.com'  # 360加固服务的用户名
+JIAGU_PASSWORD = 'xyxayxx'  # 360加固服务的密码
+KEY_PWD = 'password'  # keystore password
+ALIAS = 'alias'  # alias
+ALIAS_PWD = 'alias password'  # alias password
 
 INIT_PATH = os.getcwd()  # 初始位置
 JIAGU_TOOLKIT_PATH = INIT_PATH + '/opts/360autoBuild/jiagu'  # 360加固工具包路径
@@ -42,10 +42,10 @@ CUSTOM_JRE_PATH = JIAGU_TOOLKIT_PATH + '/java/bin'  # 自定义JRE路径
 JIAGU_JAR_PATH = JIAGU_TOOLKIT_PATH + '/jiagu.jar'  # 加固工具包的位置
 JIAGU_CACHE_PATH = os.path.normpath(JIAGU_TOOLKIT_PATH + '/.cache')  # 加固工具包的缓存文件夹的位置
 PROJECT_ROOT_PATH = INIT_PATH  # Android 项目根路径
-KEY_PATH = PROJECT_ROOT_PATH + '/moduleTigerTrade/AppLite/key.jks'  # keystore位置
-OUTPUT_APK_PATH = PROJECT_ROOT_PATH + '/build/AppLite/outputs/apk/online/release/'  # 输出apk路径
+KEY_PATH = PROJECT_ROOT_PATH + '/{rootProject}/{module}/key.jks'  # keystore位置
+OUTPUT_APK_PATH = PROJECT_ROOT_PATH + '/build/{module}/outputs/apk/online/release/'  # 输出apk路径
 APK_TARGET = OUTPUT_APK_PATH + ORIGINAL_APK_NAME  # 输入的apk位置
-APK_META_INF_PATH = OUTPUT_APK_PATH + "/AppLite-online-release/original/META-INF"  # 原META-IN路径
+APK_META_INF_PATH = OUTPUT_APK_PATH + "/{module}-online-release/original/META-INF"  # 原META-IN路径
 JIAGU_APK_TARGET = OUTPUT_APK_PATH + JIAGU_APK_NAME  # 加固后的apk位置
 RELEASE_PACKAGE_PATH = PROJECT_ROOT_PATH + '/release_package/'
 RECYCLER_PACKAGE_PATH = PROJECT_ROOT_PATH + '/release_package/history_apk/'
@@ -65,7 +65,7 @@ CMD_AUTOSIGN = '-autosign'
 # automulpkg
 CMD_AUTOMULPKG = '-automulpkg'
 
-ROBUST_MAP_PATH = "moduleTigerTrade/AppLite/robustMap"
+ROBUST_MAP_PATH = "{rootProject}/{module}/robustMap"
 
 BUILD_CMD = (
                 'gradlew' if platform.system() == "Windows" else './gradlew') + ' clean assembleOnlineRelease --stacktrace --no-daemon'
@@ -81,9 +81,9 @@ BUILD_TMP_APK_NAME = 'AppLite-online-release-tmp.apk'
 APK_TOOL_BUILD_CMD = 'java -jar ' + APK_TOOL_PATH + ' b %s -o ' + BUILD_TMP_APK_NAME_UNALIGNED
 
 JAR_SIGNER_PATH = PROJECT_ROOT_PATH + '/opts/360autoBuild/jiagu/java/bin/jarsigner'
-SIGN_APK_CMD = "jarsigner  -sigalg SHA1withRSA -digestalg SHA1 -keystore " + PROJECT_ROOT_PATH + "/moduleTigerTrade/AppLite/key.jks -storepass tiger9 " + OUTPUT_APK_PATH + BUILD_TMP_APK_NAME_UNALIGNED + " tigerbrokers"
+SIGN_APK_CMD = "jarsigner  -sigalg SHA1withRSA -digestalg SHA1 -keystore " + PROJECT_ROOT_PATH + "/{rootProject}/{module}/key.jks -storepass tiger9 " + OUTPUT_APK_PATH + BUILD_TMP_APK_NAME_UNALIGNED + " {app-name}"
 SIGN_APK_CMD_V2 = "java -jar "+ PROJECT_ROOT_PATH +"/opts/360autoBuild/jiagu/lib/apksigner.jar sign --ks "\
-                  +PROJECT_ROOT_PATH + "/moduleTigerTrade/AppLite/key.jks --ks-key-alias tigerbrokers --ks-pass pass:tiger9 --out "
+                  +PROJECT_ROOT_PATH + "{rootProject}/{module}/key.jks --ks-key-alias tigerbrokers --ks-pass pass:tiger9 --out "
 ALIGN_APK_CMD = "zipalign 4 " + OUTPUT_APK_PATH + BUILD_TMP_APK_NAME_UNALIGNED + " " + OUTPUT_APK_PATH + BUILD_TMP_APK_NAME
 
 
