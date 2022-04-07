@@ -11,10 +11,10 @@ import time
 import zipfile
 from os.path import basename
 
-ROBUST_MAP_PATH = "moduleTigerTrade/AppLite/robustMap"
+ROBUST_MAP_PATH = "{rootProject}/{module}/robustMap"
 BUILD_CMD = (
-                'gradlew' if platform.system() == 'Windows' else './gradlew') + ' assembleOnlineRelease --stacktrace -p ./moduleTigerTrade/AppLite'
-PATCH_FILE_PATH = "build/AppLite/outputs/robust/patch.jar"
+                'gradlew' if platform.system() == 'Windows' else './gradlew') + ' assembleOnlineRelease --stacktrace -p ./{rootProject}/{module}'
+PATCH_FILE_PATH = "build/{module}/outputs/robust/patch.jar"
 PATCH_FILE_OUTPUT_PATH = "patch/"
 
 # init logger
@@ -41,7 +41,7 @@ def ensure_unicode_environment():
 
 
 def recoverGradleBuild():
-    f = open("moduleTigerTrade/AppLite/build.gradle", 'r+', encoding='utf-8')
+    f = open("{rootProject}/{module}/build.gradle", 'r+', encoding='utf-8')
     original = f.read()
     application_ = "apply plugin: 'auto-patch-plugin'"
     findStart = original.find("%s" % application_)
@@ -61,11 +61,11 @@ def listApkVersion(index):
 
     extractPathMapping(int(index))
     buildPatch()
-    fp = open("build/AppLite/outputs/robust/patch.jar", 'rb')
+    fp = open("build/{module}/outputs/robust/patch.jar", 'rb')
     contents = fp.read()
     fp.close()
     print("补丁MD5:  " + hashlib.md5(contents).hexdigest())
-    md5File = "build/AppLite/outputs/robust/patch_" + a_file.split("_")[0]  + currentTime + ".txt"
+    md5File = "build/{module}/outputs/robust/patch_" + a_file.split("_")[0]  + currentTime + ".txt"
     fp = open(md5File, 'w')
     fp.write("{")
     fp.write("md5:\"" + hashlib.md5(contents).hexdigest() + "\",")
@@ -105,7 +105,7 @@ def extractPathMapping(target):
 
 def buildPatch():
     # 在Gradle文件加入 apply plugin: 'auto-patch-plugin,一定要加在com.android.application下面
-    f = open("moduleTigerTrade/AppLite/build.gradle", 'r+', encoding='utf-8')
+    f = open("{rootProject}/{module}/build.gradle", 'r+', encoding='utf-8')
     original = f.read()
     application_ = "apply plugin: 'auto-patch-plugin'"
     findStart = original.find("%s" % application_)
