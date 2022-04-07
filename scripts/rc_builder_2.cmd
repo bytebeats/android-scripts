@@ -14,8 +14,8 @@ goto build_rc
 :build_rc
 rd /s /q build
 python add_properties.py
-call gradlew assembleRcRelease -p ./moduleTigerTrade/AppLite
-call gradlew assembleRcRelease -p ./moduleTigerTrade/AppGP
+call gradlew assembleRcRelease -p ./{rootProject}/{module}
+call gradlew assembleRcRelease -p ./{rootProject}/{module2}
 goto publish_rc
 
 :publish_rc
@@ -29,7 +29,7 @@ if exist index_rc.html del index_rc.html
 git log --max-count=50 --no-merges --pretty=tformat:"### %%ci%%n    %%s" > tmp1.txt
 
 echo build succeed. html uploading
-copy ..\moduleTigerTrade\AppLite\README_rc.md+tmp1.txt tmp2.txt
+copy ..\{rootProject}\{module}\README_rc.md+tmp1.txt tmp2.txt
 pandoc tmp2.txt -c ./default.css -H ./header.html -o index_rc.html
 pscp -scp index_rc.html mobile:android/index_rc.html
 
@@ -38,6 +38,6 @@ pscp -scp rc_lite.png mobile:android
 
 echo build succeed. apk uploading
 if exist index_rc.html del index_rc.html
-pscp -scp ..\build\AppLite\outputs\apk\rc\release\AppLite-rc-release.apk mobile:android/stock_rc_lite.apk
-pscp -scp ..\build\AppGP\outputs\apk\rc\release\AppGP-rc-release.apk mobile:android/stock_rc_gp.apk
+pscp -scp ..\build\{module}\outputs\apk\rc\release\AppLite-rc-release.apk mobile:android/stock_rc_1.apk
+pscp -scp ..\build\{module2}\outputs\apk\rc\release\AppGP-rc-release.apk mobile:android/stock_rc_2.apk
 cd ..
